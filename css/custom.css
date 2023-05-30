@@ -1,0 +1,21 @@
+.img-upload-btn .img-placeholder {
+  width:200px;
+  height:200px;
+  background-color:lightgrey;
+  margin:.5rem auto
+}
+.img-upload-btn img#image-preview {
+  width:200px;
+  height:200px;
+}
+.img-upload-btn .custom-file-upload {
+  position: relative;
+}
+.img-upload-btn input.hidden-file-upload {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+}

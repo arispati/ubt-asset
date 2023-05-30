@@ -1,0 +1,57 @@
+.numberCircle {
+  display: inline-block;
+  border-radius: 50%;
+  border: 2px solid #666;
+}
+
+.numberCircle:before,
+.numberCircle:after {
+  content: '\200B';
+  display: inline-block;
+  line-height: 0px;
+  padding-top: 50%;
+  padding-bottom: 50%;
+}
+
+.numberCircle:before {
+  padding-left: 8px;
+}
+
+.numberCircle:after {
+  padding-right: 8px;
+}
+
+.audio-wrap {
+  font-size: 3em;
+}
+
+.audio-wrap.audio-answer i {
+  margin-left: .3em;
+}
+
+.audio-wrap i {
+  cursor: pointer;
+}
+
+[data-audio="playing"].audio-wrap i {
+  cursor: progress;
+}
+
+[data-audio="unplayable"].audio-wrap i {
+  cursor: not-allowed;
+}
+
+/* custom icheck */
+.form-check {
+  padding-left: 2.5em;
+}
+
+.form-check .form-check-input {
+  margin-left: -2em;
+}
+
+.form-check-input {
+  width: 1.4em;
+  height: 1.4em;
+  border-width: 2px;
+}
