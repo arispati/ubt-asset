@@ -180,7 +180,7 @@ $(function(){
   modal.show()
 
   // submit answer
-  $(document).on('click', '#submit-answer', function () {
+  $(document).on('click', '#submit-answer:not(.submitting)', function () {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -202,6 +202,9 @@ $(function(){
       }
     }).then((result) => {
       if (result.isConfirmed) {
+        $('#submit-answer')
+          .addClass('submitting')
+          .html('Submiting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
         $('#exam-form').submit()
       }
     })
