@@ -204,7 +204,7 @@ $(function(){
       if (result.isConfirmed) {
         $('#submit-answer')
           .addClass('submitting')
-          .html('Submiting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
+          .html('Submitting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
         $('#exam-form').submit()
       }
     })
