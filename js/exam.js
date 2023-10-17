@@ -34,7 +34,11 @@ $(function(){
     display.text(hours + ':' + minutes + ':' + seconds)
     
     if (this.running == false) {
-      $('#exam-form').submit()
+      let updatedBy = document.createElement('input');
+      updatedBy.type = 'hidden';
+      updatedBy.name = 'updated_by';
+      updatedBy.value = 'system';
+      $('#exam-form').append(updatedBy).submit()
     }
   }
 
