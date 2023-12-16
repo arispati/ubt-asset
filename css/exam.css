@@ -64,3 +64,13 @@
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
+
+@media (max-width: 400px) {
+  .navigation-of-question > .btn {
+    font-size: 11px;
+  }
+}
+
+.question-number > .number-header {
+  z-index: 1;
+}
