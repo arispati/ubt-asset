@@ -672,7 +672,7 @@ td, th {
   outline: none;
   font-size: 14px;
   font-weight: 600;
-  color: #d9d9d9;
+  color: #efefef;
   display: inline-block;
 }
 
@@ -726,7 +726,7 @@ td, th {
 .dope-navbar .nav-brand {
   font-size: 26px;
   font-weight: 500;
-  color: #d9d9d9;
+  color: #efefef;
   display: inline-block;
   margin-right: 30px;
 }
@@ -3047,4 +3047,30 @@ td, th {
   color: #691cff;
 }
 
-
+.text-content p {
+  color: #5f5f5f;
+}
+.text-content h2 {
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+}
+.text-content h3 {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+.text-content h4 {
+  margin-block-start: 1.33em;
+  margin-block-end: 1.33em;
+}
+.text-content h5 {
+  margin-block-start: 1.67em;
+  margin-block-end: 1.67em;
+}
+.text-content ul {
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
