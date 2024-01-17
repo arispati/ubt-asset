@@ -66,7 +66,8 @@
 }
 
 @media (max-width: 400px) {
-  .navigation-of-question > .btn {
+  .navigation-of-question > .btn,
+  span.numberCircle {
     font-size: 11px;
   }
 }

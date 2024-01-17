@@ -16,12 +16,6 @@ $(function(){
   $('#question-numbers br').remove()
   // customize image from summernote
 
-  function requestFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    }
-  }
-
   let isNavEnabled = true;
   let questionNumber = $('#question-numbers')
   let questionContainer = $('#question-container')
@@ -34,17 +28,35 @@ $(function(){
     display.text(hours + ':' + minutes + ':' + seconds)
     
     if (this.running == false) {
-      let updatedBy = document.createElement('input');
-      updatedBy.type = 'hidden';
-      updatedBy.name = 'updated_by';
-      updatedBy.value = 'system';
-      $('#exam-form').append(updatedBy).submit()
+      submitTheForm(true)
+    }
+  }
+
+  // submit the exam form
+  function submitTheForm(bySystem = false) {
+    // form element
+    let form = $('#exam-form')
+    // show submit loading
+    $('#submit-container')
+      .html('<span class="btn btn-primary">Submitting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
+    // if submitted by system
+    if (bySystem) {
+      let updatedBy = document.createElement('input')
+      updatedBy.type = 'hidden'
+      updatedBy.name = 'updated_by'
+      updatedBy.value = 'system'
+      // submit form with updated_by input
+      form.append(updatedBy).submit()
+    } else {
+      // otherwise
+      form.submit()
     }
   }
 
   // run the timer
   timer.onTick(tickHandle).start()
 
+  // toggle question
   function toggleQuestion(number) {
     if (isNavEnabled) {
       let questionElm = $(`.question-number[data-number="${number}"]`)
@@ -56,6 +68,7 @@ $(function(){
     }
   }
 
+  // question navigation
   function navQuestion(current, navigateTo) {
     if (isNavEnabled) {
       let elmCurrent = $(`.question-number[data-number="${current}"]`)
@@ -103,6 +116,7 @@ $(function(){
     buttonContainer.attr('data-answer', 1)
   })
 
+  // question counter
   function questionCounter(category) {
     let count = $(`#tq-table-${category} .btn-question-container:not(.d-none)`).length
     let label = count > 1 ? 'Questions' : 'Question'
@@ -110,6 +124,7 @@ $(function(){
     return `${count} ${label}`
   }
 
+  // tab toggle
   function toggleTab(tab) {
     if (isNavEnabled) {
       switch (tab) {
@@ -174,43 +189,20 @@ $(function(){
     sound.play()
   })
 
-  // toggle fullscreen
-  $(document).on('click', '.rfs', function () {
-    requestFullScreen()
+  // request submit
+  $(document).on('click', 'span#submit-request', function () {
+    $('span#submit-confirmation').removeClass('d-none')
+    $('span#submit-request').addClass('d-none')
   })
 
-  // show warning modal
-  const modal = new bootstrap.Modal('#model-fs')
-  modal.show()
+  // cancel submit
+  $(document).on('click', 'span#submit-cancel', function () {
+    $('span#submit-request').removeClass('d-none')
+    $('span#submit-confirmation').addClass('d-none')
+  })
 
-  // submit answer
-  $(document).on('click', '#submit-answer:not(.submitting)', function () {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit answers!',
-      allowOutsideClick: () => {
-        const popup = Swal.getPopup()
-        popup.classList.remove('swal2-show')
-        setTimeout(() => {
-          popup.classList.add('animate__animated', 'animate__headShake')
-        })
-        setTimeout(() => {
-          popup.classList.remove('animate__animated', 'animate__headShake')
-        }, 500)
-        return false
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $('#submit-answer')
-          .addClass('submitting')
-          .html('Submitting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
-        $('#exam-form').submit()
-      }
-    })
+  // submit the form
+  $(document).on('click', 'span#submit-confirm', function () {
+    submitTheForm()
   })
 });
