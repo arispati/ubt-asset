@@ -1,4 +1,56 @@
 $(function(){
+  // synch function
+  function doSynch() {
+    // define variable
+    const fetchUrl = $('#exam-container').attr('data-synchronize')
+    const fetchConfig = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    }
+    // fetch synch
+    fetch(fetchUrl, fetchConfig)
+      .then(response => {
+        // if response ok
+        if (response.ok) {
+          // validate status code
+          if (response.status == 200) {
+            // return the json data
+            return response.json()
+          }
+          // otherwise throw an error
+          throw new Error('Something went wrong')
+        } else {
+          // if unauthorized
+          if (response.status == 401) {
+            // reload the page
+            clearInterval(synchProcess)
+            location.reload()
+          } else {
+            // otherwise throw an error
+            throw new Error(`Failed to fetch data. Status: ${response.status}`)
+          }
+        }
+      })
+      .then(json => {
+        // if inactive student
+        if (json.data.code == 'inactive') {
+          // reload the page
+          clearInterval(synchProcess)
+          location.reload()
+        }
+      })
+      .catch(error => {
+        // stop the synch
+        clearInterval(synchProcess)
+      });
+  }
+  // get synch interval
+  const synchInterval = $('#exam-container').attr('data-interval')
+  // synch process
+  const synchProcess = setInterval(doSynch, synchInterval * 1000)
+
   // prevent default
   $(document).keydown(function (e) {
     e.preventDefault()
