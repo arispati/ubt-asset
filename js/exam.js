@@ -75,7 +75,7 @@ $(function(){
   let duration = display.attr('data-duration')
   let timer = new CountDownTimer(duration)
   let timeoutSound = new Howl({
-    src: 'mp3/timeout.mp3'
+    src: 'https://cdn.jsdelivr.net/gh/arispati/ubt-asset@main/mp3/timeout.mp3'
   })
 
   // timer handle
