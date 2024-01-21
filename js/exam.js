@@ -85,10 +85,6 @@ $(function(){
     if (this.running == false) {
       submitTheForm(true)
     } else {
-      // change duration color if there are 30 seconds remaining
-      if (hours == 0 && minutes == 0 && seconds == 30) {
-        display.css('color', '#e40000')
-      }
       // play sound if there are 30 seconds remaining
       if (hours == 0 && minutes == 0 && seconds <= 30) {
         timeoutSound.play()
