@@ -74,6 +74,9 @@ $(function(){
   let display = $('#timer')
   let duration = display.attr('data-duration')
   let timer = new CountDownTimer(duration)
+  let timeoutSound = new Howl({
+    src: '/mp3/timeout.mp3'
+  })
 
   // timer handle
   function tickHandle({hours, minutes, seconds}) {
@@ -81,8 +84,20 @@ $(function(){
     
     if (this.running == false) {
       submitTheForm(true)
+    } else {
+      // change duration color if there are 30 seconds remaining
+      if (hours == 0 && minutes == 0 && seconds == 30) {
+        display.css('color', '#e40000')
+      }
+      // play sound if there are 30 seconds remaining
+      if (hours == 0 && minutes == 0 && seconds <= 30) {
+        timeoutSound.play()
+      }
     }
   }
+
+  // run the timer
+  timer.onTick(tickHandle).start()
 
   // submit the exam form
   function submitTheForm(bySystem = false) {
@@ -104,9 +119,6 @@ $(function(){
       form.submit()
     }
   }
-
-  // run the timer
-  timer.onTick(tickHandle).start()
 
   // toggle question
   function toggleQuestion(number) {
