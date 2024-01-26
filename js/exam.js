@@ -9,56 +9,63 @@ $(function(){
   // prevent default
 
   // synch function
-  function doSynch() {
-    // define variable
-    const fetchUrl = $('#exam-container').attr('data-synchronize')
-    const fetchConfig = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
+  function doSynch(fetchUrl) {
+    // validate url
+    if (fetchUrl == undefined) {
+      // stop synchronize
+      clearInterval(synchProcess)
+    } else {
+      // do synchronize
+      const fetchConfig = {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }
       }
-    }
-    // fetch synch
-    fetch(fetchUrl, fetchConfig)
-      .then(response => {
-        // if response ok
-        if (response.ok) {
-          // validate status code
-          if (response.status == 200) {
-            // return the json data
-            return response.json()
+      // fetch synch
+      fetch(fetchUrl, fetchConfig)
+        .then(response => {
+          // if response ok
+          if (response.ok) {
+            // validate status code
+            if (response.status == 200) {
+              // return the json data
+              return response.json()
+            }
+            // otherwise throw an error
+            throw new Error('Something went wrong')
+          } else {
+            // if unauthorized
+            if (response.status == 401) {
+              // reload the page
+              clearInterval(synchProcess)
+              location.reload()
+            } else {
+              // otherwise throw an error
+              throw new Error(`Failed to fetch data. Status: ${response.status}`)
+            }
           }
-          // otherwise throw an error
-          throw new Error('Something went wrong')
-        } else {
-          // if unauthorized
-          if (response.status == 401) {
+        })
+        .then(json => {
+          // if inactive student
+          if (json.data.code == 'inactive') {
             // reload the page
             clearInterval(synchProcess)
             location.reload()
-          } else {
-            // otherwise throw an error
-            throw new Error(`Failed to fetch data. Status: ${response.status}`)
           }
-        }
-      })
-      .then(json => {
-        // if inactive student
-        if (json.data.code == 'inactive') {
-          // reload the page
+        })
+        .catch(error => {
+          // stop the synch
           clearInterval(synchProcess)
-          location.reload()
-        }
-      })
-      .catch(error => {
-        // stop the synch
-        clearInterval(synchProcess)
-      });
+        });
+    }
   }
   // get synch interval
-  const synchInterval = $('#exam-container').attr('data-interval')
+  const synchInterval = $('#exam-container').attr('data-interval') || 30
+  // get synchronize url
+  const synchUrl = $('#exam-container').attr('data-synchronize')
   // synch process
-  const synchProcess = setInterval(doSynch, synchInterval * 1000)
+  const synchProcess = setInterval(doSynch(synchUrl), synchInterval * 1000)
   // synch
 
   // customize image from summernote
@@ -73,7 +80,7 @@ $(function(){
   let questionNumber = $('#question-numbers')
   let questionContainer = $('#question-container')
   let display = $('#timer')
-  let duration = display.attr('data-duration')
+  let duration = display.attr('data-duration') || 7200
   let timer = new CountDownTimer(duration)
   let timeoutSound = new Howl({
     src: 'https://cdn.jsdelivr.net/gh/arispati/ubt-asset@main/mp3/timeout.mp3'
