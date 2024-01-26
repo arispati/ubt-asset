@@ -1,4 +1,13 @@
 $(function(){
+  // prevent default
+  $(document).keydown(function (e) {
+    e.preventDefault()
+  })
+  $(document).on('contextmenu', function () {
+    return false
+  })
+  // prevent default
+
   // synch function
   function doSynch() {
     // define variable
@@ -50,15 +59,7 @@ $(function(){
   const synchInterval = $('#exam-container').attr('data-interval')
   // synch process
   const synchProcess = setInterval(doSynch, synchInterval * 1000)
-
-  // prevent default
-  $(document).keydown(function (e) {
-    e.preventDefault()
-  })
-  $(document).on('contextmenu', function () {
-    return false
-  })
-  // prevent default
+  // synch
 
   // customize image from summernote
   $('#question-numbers img[src^="data:image"]').each(function () {
@@ -97,12 +98,12 @@ $(function(){
 
   // submit the exam form
   function submitTheForm(bySystem = false) {
+    // move to all question tab
+    switchToTab('all')
     // disabled navigation
     isNavEnabled = false;
-    // move to all question tab
-    toggleTab('all')
     // enabled layer
-    $('exam-body-layer').removeClass('d-none')
+    $('#exam-body-layer').removeClass('d-none')
     // show submit loading
     $('#submit-container')
     .html('<span class="btn btn-primary">Submitting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
@@ -212,22 +213,23 @@ $(function(){
       })
     }
   }
-
-  // tab toggle
-  $(document).on('click', '.btn-tab-switch', function (e) {
+  // switch to tab name
+  function switchToTab(tabName) {
     if (isNavEnabled) {
       $('.btn-tab-switch').removeClass('active')
-      $(this).addClass('active')
-      let tab = $(this).attr('data-tab')
+      $(`.btn-tab-switch[data-tab="${tabName}"]`).addClass('active')
       let activeQuestion = $('.btn-tab-switch').attr('data-current')
-  
-      toggleTab(tab)
-  
+      toggleTab(tabName)
       if (activeQuestion != undefined) {
         toggleQuestion(activeQuestion)
         $('.btn-tab-switch').removeAttr('data-current')
       }
     }
+  }
+
+  // tab toggle
+  $(document).on('click', '.btn-tab-switch', function (e) {
+    switchToTab($(this).attr('data-tab'))
   })
 
   // play audio
