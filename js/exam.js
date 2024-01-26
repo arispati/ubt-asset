@@ -97,11 +97,17 @@ $(function(){
 
   // submit the exam form
   function submitTheForm(bySystem = false) {
-    // form element
-    let form = $('#exam-form')
+    // disabled navigation
+    isNavEnabled = false;
+    // move to all question tab
+    toggleTab('all')
+    // enabled layer
+    $('exam-body-layer').removeClass('d-none')
     // show submit loading
     $('#submit-container')
-      .html('<span class="btn btn-primary">Submitting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
+    .html('<span class="btn btn-primary">Submitting... <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></span>')
+    // form element
+    let form = $('#exam-form')
     // if submitted by system
     if (bySystem) {
       let updatedBy = document.createElement('input')
