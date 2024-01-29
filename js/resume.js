@@ -156,11 +156,6 @@ $(function(){
     sound.play()
   })
 
-  // toggle fullscreen
-  $(document).on('click', '.rfs', function () {
-    requestFullScreen()
-  })
-
   // show warning modal
   const modal = new bootstrap.Modal('#model-fs')
   modal.show()
