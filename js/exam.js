@@ -8,6 +8,22 @@ $(function(){
   })
   // prevent default
 
+  // request fullscreen
+  function requestFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    }
+  }
+
+  // toggle fullscreen
+  $(document).on('click', '.rfs', function () {
+    requestFullScreen()
+  })
+
+  // show warning modal
+  const modal = new bootstrap.Modal('#model-fs')
+  modal.show()
+
   // get synch interval
   const synchInterval = $('#exam-container').attr('data-interval') || 30
   // get synchronize url
