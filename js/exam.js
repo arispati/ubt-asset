@@ -21,8 +21,11 @@ $(function(){
   })
 
   // show warning modal
-  const modal = new bootstrap.Modal('#model-fs')
+  const modal = new bootstrap.Modal('#modal-fs')
   modal.show()
+
+  // show logged out warning modal
+  const errorSynchModal = new bootstrap.Modal('#modal-synch-error')
 
   // get synch interval
   const synchInterval = $('#exam-container').attr('data-interval') || 30
@@ -58,9 +61,10 @@ $(function(){
         } else {
           // if unauthorized
           if (response.status == 401) {
-            // reload the page
             clearInterval(synchProcess)
-            location.reload()
+            // show error modal
+            $('#modal-synch-error .modal-body').text('Sesi anda pada gawai ini sudah berakhir, pastikan anda tidak masuk di gawai lain.');
+            errorSynchModal.show()
           } else {
             // otherwise throw an error
             throw new Error(`Failed to fetch data. Status: ${response.status}`)
@@ -69,9 +73,10 @@ $(function(){
       }).then(json => {
         // if inactive student
         if (json.data.code == 'inactive') {
-          // reload the page
           clearInterval(synchProcess)
-          location.reload()
+          // show error modal
+          $('#modal-synch-error .modal-body').text('Akun anda di non-aktifkan oleh admin.');
+          errorSynchModal.show()
         }
       }).catch(error => {
         // stop the synch
@@ -292,5 +297,19 @@ $(function(){
   // submit the form
   $(document).on('click', 'span#submit-confirm', function () {
     submitTheForm()
+  })
+
+  // close synch error modal
+  $(document).on('click', '#modal-synch-error-close', function () {
+    // get home page url
+    let homePageUrl = $('#exam-container').attr('data-homepage')
+    // if undefined
+    if (homePageUrl == undefined) {
+      // reload the page
+      window.location.reload()
+    } else {
+      // redirect to home page
+      window.location.replace(homePageUrl)
+    }
   })
 });

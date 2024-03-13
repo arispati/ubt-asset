@@ -157,6 +157,6 @@ $(function(){
   })
 
   // show warning modal
-  const modal = new bootstrap.Modal('#model-fs')
+  const modal = new bootstrap.Modal('#modal-fs')
   modal.show()
 });

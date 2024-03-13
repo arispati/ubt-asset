@@ -92,11 +92,20 @@ $(function () {
     }).then(json => {
       // if success resposne
       if (json.status == 'success') {
-        preloadMedia(
-          json.data.media,
-          function () {window.location.replace(json.data.redirect)},
-          errorHandle
-        )
+        // if have media
+        if (json.data.media.length) {
+          // preload the media
+          preloadMedia(
+            json.data.media,
+            function () {window.location.replace(json.data.redirect)},
+            errorHandle
+          )
+        } else {
+          // set progres
+          $('#progress').text(100)
+          // then redirect it
+          window.location.replace(json.data.redirect)
+        }
       } else {
         // otherwise throw an error
         throw new Error(json.message)
