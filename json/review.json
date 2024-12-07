@@ -1,0 +1,26 @@
+[
+    {
+        "user": {
+            "name": "Sucipto",
+            "description": "LPK Oasis Pati",
+            "image": "web/img/review/oasis.jpg"
+        },
+        "review": "Aplikasi ini sangat memenuhi harapan saya. Pengalaman menggunakannya sungguh luar biasa, karena sangat mudah digunakan. Hasil yang diberikan juga sesuai dengan harapan."
+    },
+    {
+        "user": {
+            "name": "Hermanto",
+            "description": "LPKS HYEONG NIM",
+            "image": "web/img/review/hyeongnim.jpg"
+        },
+        "review": "Sangat membantu saya dalam latihan bahasa Korea. Saya sangat senang dengan kemajuan yang saya capai sejak menggunakan aplikasi ini. Soal yang disediakan sangat berkualitas."
+    },
+    {
+        "user": {
+            "name": "Kusnoto",
+            "description": "LPK SARANGHAEYO",
+            "image": "web/img/review/sarangheyo.jpg"
+        },
+        "review": "Benar-benar aplikasi yang luar biasa. Saya sangat terkesan dengan desain mengagumkan yang dimilikinya. Pengalaman menggunakan aplikasi ini sungguh luar biasa."
+    }
+]
