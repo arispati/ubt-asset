@@ -79,31 +79,89 @@ $(function(){
   // customize image from summernote
 
   let isNavEnabled = true;
+  const appSchema = $('#exam-container').attr('data-schema')
+  let homePageUrl = $('#exam-container').attr('data-homepage')
   let questionNumber = $('#question-numbers')
   let questionContainer = $('#question-container')
-  let display = $('#timer')
-  let duration = display.attr('data-duration') || 7200
-  let timer = new CountDownTimer(duration)
   let timeoutSound = new Howl({
     src: 'https://cdn.jsdelivr.net/gh/arispati/ubt-asset@main/mp3/timeout.mp3'
   })
+  
+  // timer
+  let display = $('#timer')
+  let duration = display.attr('data-duration') || 7200
+  // run timer if duration higher than 0
+  if (duration > 0) {
+    let timer = new CountDownTimer(duration)
 
-  // timer handle
-  function tickHandle({hours, minutes, seconds}) {
-    display.text(hours + ':' + minutes + ':' + seconds)
-    
-    if (this.running == false) {
-      submitTheForm(true)
-    } else {
-      // play sound if there are 30 seconds remaining
-      if (hours == 0 && minutes == 0 && seconds <= 30) {
-        timeoutSound.play()
+    function tickHandle({hours, minutes, seconds}) {
+      display.text(hours + ':' + minutes + ':' + seconds)
+      
+      if (this.running == false) {
+        submitTheForm(true)
+      } else {
+        // play sound if there are 30 seconds remaining
+        if (hours == 0 && minutes == 0 && seconds <= 30) {
+          timeoutSound.play()
+        }
       }
     }
-  }
 
-  // run the timer
-  timer.onTick(tickHandle).start()
+    // run the timer
+    timer.onTick(tickHandle).start()
+  } else {
+    // disabled navigation
+    isNavEnabled = false;
+    // enabled layer
+    $('#exam-body-layer').removeClass('d-none')
+    // show modal
+    $('#modal-timer-warning').modal('show')
+    // back to home
+    $(document).on('click', '#modal-timer-warning-close', () => window.location.replace(homePageUrl))
+  }
+  // timer
+
+  // page configuration
+  if (appSchema == atob('d2Vi')) {
+    // show warning modal
+    $('#modal-intro').modal('show')
+
+    function requestFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      }
+    }
+
+    // toggle fullscreen
+    $(document).on('click', '.rfs', () => requestFullscreen())
+
+    document.addEventListener("visibilitychange", function() {
+      // if user away
+      if (document.visibilityState === 'hidden') {
+        // hide modal intro if shown
+        $('#modal-intro').modal('hide')
+        // show warning modal
+        $('#modal-away').modal('show')
+        // remove all answer
+        $('input.form-check-input[type="radio"]').prop('checked', false)
+        // change button
+        $('.btn-question').addClass('btn-outline-success')
+          .removeClass('btn-outline-primary')
+          .removeClass('active')
+        // remove data attribute
+        $('.btn-question-container').attr('data-answer', 0)
+        // react tab
+        switchToTab($('.btn-tab-switch.active').attr('data-tab'))
+      }
+    });
+
+    // warning close
+    $(document).on('click', '#modal-away-close', function () {
+      // reload the page
+      window.location.reload()
+    })
+  }
+  // page configuration
 
   // submit the exam form
   function submitTheForm(bySystem = false) {
@@ -285,8 +343,6 @@ $(function(){
 
   // close synch error modal
   $(document).on('click', '#modal-synch-error-close', function () {
-    // get home page url
-    let homePageUrl = $('#exam-container').attr('data-homepage')
     // if undefined
     if (homePageUrl == undefined) {
       // reload the page
