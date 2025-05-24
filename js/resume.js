@@ -135,24 +135,24 @@ $(function(){
     let elm = $(this)
     let icon = $(this).find('i')
     let audio = $(this).attr('data-content')
-    let sound = new Howl({
-      src: [audio],
-      onplay: function () {
-        isNavEnabled = false
-        $('#exam-body').addClass('playing')
-        elm.attr('data-audio', 'playing')
-        icon.removeClass('text-primary').addClass('text-secondary')
-        icon.removeClass('fa-headphones').addClass('fa-volume-up')
-      },
-      onend: function() {
-        elm.attr('data-audio', 'playable')
-        icon.removeClass('text-secondary').addClass('text-primary')
-        icon.removeClass('fa-volume-up').addClass('fa-headphones')
-        $('#exam-body').removeClass('playing')
-        isNavEnabled = true
-      }
-    })
-    
+    let sound = new Audio(audio)
+    // when playing
+    sound.onplay = function () {
+      isNavEnabled = false
+      $('#exam-body').addClass('playing')
+      elm.attr('data-audio', 'playing')
+      icon.removeClass('text-primary').addClass('text-secondary')
+      icon.removeClass('fa-headphones').addClass('fa-volume-up')
+    }
+    // when ended
+    sound.onended = function () {
+      elm.attr('data-audio', 'playable')
+      icon.removeClass('text-secondary').addClass('text-primary')
+      icon.removeClass('fa-volume-up').addClass('fa-headphones')
+      $('#exam-body').removeClass('playing')
+      isNavEnabled = true
+    }
+    // play the sound
     sound.play()
   })
 
