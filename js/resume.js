@@ -157,6 +157,6 @@ $(function(){
   })
 
   // show warning modal
-  const modal = new bootstrap.Modal('#modal-fs')
+  const modal = new bootstrap.Modal('#modal-resume')
   modal.show()
 });
