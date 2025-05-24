@@ -18,7 +18,7 @@ $(function () {
         media.onload = function () {onLoadMediaHandle(this)}
       } else {
         media = new Audio()
-        media.addEventListener('loadeddata', function (e) {onLoadMediaHandle(e.currentTarget)})
+        media.oncanplaythrough = (e) => onLoadMediaHandle(e.currentTarget)
       }
       list.push(media)
       media.src = mediaList[i].url

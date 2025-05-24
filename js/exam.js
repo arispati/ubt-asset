@@ -83,9 +83,7 @@ $(function(){
   let homePageUrl = $('#exam-container').attr('data-homepage')
   let questionNumber = $('#question-numbers')
   let questionContainer = $('#question-container')
-  let timeoutSound = new Howl({
-    src: 'https://cdn.jsdelivr.net/gh/arispati/ubt-asset@main/mp3/timeout.mp3'
-  })
+  let timeoutSound = new Audio('https://cdn.jsdelivr.net/gh/arispati/ubt-asset@main/mp3/timeout.mp3')
   
   // timer
   let display = $('#timer')
@@ -304,23 +302,23 @@ $(function(){
     let elm = $(this)
     let icon = $(this).find('i')
     let audio = $(this).attr('data-content')
-    let sound = new Howl({
-      src: [audio],
-      onplay: function () {
-        isNavEnabled = false
-        $('#exam-body').addClass('playing')
-        elm.attr('data-audio', 'playing')
-        icon.removeClass('text-primary').addClass('text-secondary')
-        icon.removeClass('fa-headphones').addClass('fa-volume-up')
-      },
-      onend: function() {
-        icon.removeClass('fa-volume-up').addClass('fa-headphones')
-        elm.attr('data-audio', 'unplayable')
-        $('#exam-body').removeClass('playing')
-        isNavEnabled = true
-      }
-    })
-    
+    let sound = new Audio(audio)
+    // when playing
+    sound.onplay = function () {
+      isNavEnabled = false
+      $('#exam-body').addClass('playing')
+      elm.attr('data-audio', 'playing')
+      icon.removeClass('text-primary').addClass('text-secondary')
+      icon.removeClass('fa-headphones').addClass('fa-volume-up')
+    }
+    // when ended
+    sound.onended = function () {
+      icon.removeClass('fa-volume-up').addClass('fa-headphones')
+      elm.attr('data-audio', 'unplayable')
+      $('#exam-body').removeClass('playing')
+      isNavEnabled = true
+    }
+    // play the sound
     sound.play()
   })
 
